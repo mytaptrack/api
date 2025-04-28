@@ -1,0 +1,34 @@
+query MyQuery {
+  getData(
+    startMillis: 1678579200000,
+    studentId: "625793de-d8e0-4636-ab8b-9258a6803115",
+    endMillis: 1679184000000) {
+    data {
+      behavior
+      dateEpoc
+      abc {
+        a
+        c
+      }
+      isManual
+      score
+      reported
+      source {
+        device
+        rater
+      }
+      deleted {
+        by
+        date
+      }
+    }
+    excludeDays
+    excludedIntervals
+    includeDays
+    startMillis
+    schedules {
+      schedule
+      date
+    }
+  }
+}

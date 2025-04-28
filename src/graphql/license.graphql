@@ -1,0 +1,232 @@
+type SnapshotConfigMeasurement @aws_iam @aws_cognito_user_pools {
+    name: String!
+    order: Int!
+}
+
+input SnapshotConfigMeasurementInput @aws_iam @aws_cognito_user_pools {
+    name: String!
+    order: Int!
+}
+
+type SnapshotConfig @aws_iam @aws_cognito_user_pools {
+    low: String!
+    medium: String!
+    high: String!
+    measurements: [SnapshotConfigMeasurement]!
+}
+
+input SnapshotConfigInput @aws_iam @aws_cognito_user_pools {
+    low: String!
+    medium: String!
+    high: String!
+    measurements: [SnapshotConfigMeasurementInput]!
+}
+
+type LicenseDisplayTags @aws_iam @aws_cognito_user_pools {
+    order: Int!
+    tagName: String!
+}
+
+input LicenseDisplayTagsInput @aws_iam @aws_cognito_user_pools {
+    order: Int!
+    tagName: String!
+}
+
+type LicenseFeatures @aws_iam @aws_cognito_user_pools {
+    abc: Boolean
+    appGroups: Boolean
+    behaviorTargets: Boolean
+    behaviorTracking: Boolean
+    browserTracking: Boolean
+    dashboard: Boolean
+    devices: Boolean
+    duration: Boolean
+    displayTags: [LicenseDisplayTags]
+    documents: Boolean
+    download: Boolean
+    emailTextNotifications: Boolean
+    free: Boolean
+    intervalWBaseline: Boolean
+    manageResponses: Boolean
+    manageStudentTemplates: Boolean
+    manage: Boolean!
+    notifications: Boolean
+    personal: String
+    response: Boolean
+    supportChanges: Boolean
+    schedule: Boolean
+    serviceProgress: Boolean
+    serviceTracking: Boolean
+    snapshot: Boolean
+    snapshotConfig: SnapshotConfig
+    intensity: Int
+}
+
+input LicenseFeaturesInput @aws_iam @aws_cognito_user_pools {
+    abc: Boolean
+    appGroups: Boolean
+    behaviorTargets: Boolean
+    behaviorTracking: Boolean
+    browserTracking: Boolean
+    dashboard: Boolean
+    devices: Boolean
+    duration: Boolean
+    displayTags: [LicenseDisplayTagsInput]
+    documents: Boolean
+    download: Boolean
+    emailTextNotifications: Boolean
+    intervalWBaseline: Boolean
+    manageResponses: Boolean
+    manageStudentTemplates: Boolean
+    manage: Boolean!
+    notifications: Boolean
+    personal: String
+    response: Boolean
+    supportChanges: Boolean
+    schedule: Boolean
+    serviceProgress: Boolean
+    serviceTracking: Boolean
+    snapshot: Boolean
+    snapshotConfig: SnapshotConfigInput
+}
+
+input LicenseUpdateInput @aws_iam @aws_cognito_user_pools {
+    license: String!
+    admins: [String]
+    cancel: Boolean
+    fullCancel: Boolean
+}
+
+type LicenseTagSet @aws_iam @aws_cognito_user_pools {
+    name: String!
+    tags: [String]!
+}
+
+input LicenseTagSetInput @aws_iam @aws_cognito_user_pools {
+    name: String!
+    tags: [String]!
+}
+
+type AbcCollection @aws_iam @aws_cognito_user_pools {
+    name: String
+    tags: [String]!
+    antecedents: [String]!
+    consequences: [String]!
+    overwrite: Boolean
+}
+
+input AbcCollectionInput @aws_iam @aws_cognito_user_pools {
+    name: String
+    tags: [String]!
+    antecedents: [String]!
+    consequences: [String]!
+    overwrite: Boolean
+    remove: Boolean
+}
+
+type LicenseDetails @aws_iam @aws_cognito_user_pools {
+    abcCollections: [AbcCollection]!
+    admins: [String]!
+    customer: String!
+    emailDomain: String
+    expiration: String!
+    features: LicenseFeatures!
+    license: String
+    mobileTemplates: [LicenseAppTemplate]!
+    multiCount: Int
+    appLimit: Int
+    serviceCount: Int
+    serviceUsed: Int
+    singleCount: Int
+    singleUsed: Int
+    start: String
+    studentTemplates: [LicenseStudentTemplate]!
+    tags: LicenseTags
+}
+
+type LicenseUserDetails @aws_iam @aws_cognito_user_pools {
+    abcCollections: [AbcCollection]!
+    admins: [String]!
+    customer: String!
+    emailDomain: String
+    expiration: String!
+    features: LicenseFeatures!
+    license: String
+    mobileTemplates: [LicenseAppTemplate]!
+    multiCount: Int
+    serviceCount: Int
+    serviceUsed: Int
+    singleCount: Int
+    singleUsed: Int
+    appLimit: Int
+    start: String
+    studentTemplates: [LicenseStudentTemplate]!
+    tags: LicenseTags
+    userId: String!
+}
+
+input LicenseDetailsInput @aws_iam @aws_cognito_user_pools {
+    abcCollections: [AbcCollectionInput]!
+    admins: [String]!
+    customer: String!
+    emailDomain: String
+    expiration: String!
+    features: LicenseFeaturesInput
+    license: String
+    mobileTemplates: [LicenseAppTemplateInput]!
+    multiCount: Int!
+    singleCount: Int!
+    studentTemplates: [LicenseStudentTemplateInput]!
+    tags: LicenseTagsInput
+}
+
+type LicenseTags @aws_iam @aws_cognito_user_pools {
+    devices: [LicenseTagSet]
+}
+
+input LicenseTagsInput @aws_iam @aws_cognito_user_pools {
+    devices: [LicenseTagSetInput]!
+}
+
+type LicenseDetailsWithUsage @aws_iam @aws_cognito_user_pools {
+    license: String
+    customer: String!
+    singleCount: Int!
+    singleUsed: Int!
+    multiCount: Int!
+    admins: [String]!
+    emailDomain: String!
+    expiration: String!
+    mobileTemplates: [LicenseAppTemplate]!
+    studentTemplates: [LicenseStudentTemplate]!
+    features: LicenseFeatures
+    abcCollections: [AbcCollection]!
+    tags: LicenseTags
+    usage: [LicenseUsage]!
+}
+
+type LicenseUsage @aws_iam @aws_cognito_user_pools {
+    month: String!
+    trackedEvents: Int!
+    studentsTracked: Int!
+}
+
+type FlexibleMeasurement {
+    date: String
+    count: Int
+}
+
+type ManageStatRow @aws_iam @aws_cognito_user_pools {
+    single: Int!
+    flexible: [FlexibleMeasurement]!
+}
+
+type LicenseStats @aws_iam @aws_cognito_user_pools {
+    license: LicenseDetails!
+    stats: ManageStatRow!
+}
+
+input LicenseDisplayTagsPutInput @aws_iam @aws_cognito_user_pools {
+    license: String!
+    displayTags: [LicenseDisplayTagsInput]!
+}

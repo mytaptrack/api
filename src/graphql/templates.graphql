@@ -1,0 +1,101 @@
+type TrackTemplateBehavior @aws_iam @aws_cognito_user_pools {
+    name: String!
+    desc: String
+    track: Boolean
+    abc: Boolean
+    order: Int!
+}
+
+input TrackTemplateBehaviorInput @aws_iam @aws_cognito_user_pools {
+    name: String!
+    desc: String
+    track: Boolean
+    abc: Boolean
+    order: Int!
+}
+
+type StudentTemplateBehavior @aws_iam @aws_cognito_user_pools {
+    name: String!
+    desc: String
+    isDuration: Boolean
+    daytime: Boolean
+    baseline: Boolean
+    targets: [StudentTemplateBehaviorTarget]
+}
+
+input StudentTemplateBehaviorInput @aws_iam @aws_cognito_user_pools {
+    name: String!
+    desc: String
+    isDuration: Boolean
+    daytime: Boolean
+    baseline: Boolean
+    targets: [StudentTemplateBehaviorTargetInput]
+}
+
+type StudentTemplateBehaviorTarget @aws_iam @aws_cognito_user_pools {
+    targetType: String!
+    target: Float!
+    progress: Float
+    measurements: [StudentTemplateBehaviorMeasurement!]!
+    measurement: MeasurementType
+}
+
+input StudentTemplateBehaviorTargetInput @aws_iam @aws_cognito_user_pools {
+    targetType: String!
+    target: Float!
+    progress: Float
+    measurements: [StudentTemplateBehaviorMeasurementInput!]!
+    measurement: MeasurementType
+}
+
+type StudentTemplateBehaviorMeasurement @aws_iam @aws_cognito_user_pools {
+    name: String!
+    value: Float!
+}
+
+input StudentTemplateBehaviorMeasurementInput @aws_iam @aws_cognito_user_pools {
+    name: String!
+    value: Float!
+}
+
+enum MeasurementType @aws_iam @aws_cognito_user_pools {
+    Event
+    Avg
+    Sum
+    Max
+    Min
+}
+
+type LicenseStudentTemplate @aws_iam @aws_cognito_user_pools {
+    name: String!
+    desc: String
+    behaviors: [StudentTemplateBehavior!]!
+    responses: [StudentTemplateBehavior!]!
+    appTemplates: [LicenseAppTemplate!]!
+    tags: [String!]!
+}
+
+input LicenseStudentTemplateInput @aws_iam @aws_cognito_user_pools {
+    name: String!
+    desc: String
+    behaviors: [StudentTemplateBehaviorInput!]!
+    responses: [StudentTemplateBehaviorInput!]!
+    appTemplates: [LicenseAppTemplateInput!]!
+    tags: [String!]!
+}
+
+type LicenseAppTemplate @aws_iam @aws_cognito_user_pools {
+    name: String!
+    desc: String
+    events: [TrackTemplateBehavior!]!
+    tags: [String!]!
+    parentTemplate: String
+}
+
+input LicenseAppTemplateInput @aws_iam @aws_cognito_user_pools {
+    name: String!
+    desc: String
+    events: [TrackTemplateBehaviorInput!]!
+    tags: [String!]!
+    parentTemplate: String
+}

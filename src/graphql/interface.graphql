@@ -1,0 +1,74 @@
+type Query {
+    getLicenses(licenses: [String]): [LicenseDetails] @aws_iam @aws_cognito_user_pools
+    getLicenseStats(license: String!): LicenseStats @aws_iam @aws_cognito_user_pools
+    
+    getUser: User @aws_iam @aws_cognito_user_pools
+    getUsersForLicense(license: String!): LicenseUsersResult @aws_iam @aws_cognito_user_pools
+    getUserPaymentSession(license: String): StripeSessionResult @aws_cognito_user_pools
+
+    getAppList(license: String!, studentId: String): [AppSummary] @aws_iam @aws_cognito_user_pools
+    getApp(license: String!, deviceId: String!): AppDefinition @aws_iam @aws_cognito_user_pools
+    getAppsForDevice(deviceId: String!, auth: String!, apps: [AppClaimInput]): DeviceAppDefinition @aws_iam
+    getAppsForLicense(license: String!): [AppDefinition] @aws_iam
+    getAppToken(license: String!, deviceId: String!, expiration: Long): AppToken @aws_iam @aws_cognito_user_pools
+
+    getTrackForDevice(dsn: String!, auth: String!): Track20 @aws_iam
+
+    getGlobalServiceReport: GlobalServicesReport @aws_iam @aws_cognito_user_pools
+
+    getStudents(params: getStudentsParams): [StudentSummary] @aws_cognito_user_pools
+    getStudent(studentId: String!, userId: String @aws_iam): Student @aws_iam @aws_cognito_user_pools
+    getStudentSources(studentId: String): StudentDataSources @aws_iam @aws_cognito_user_pools
+    findStudent(license: String, firstName: String, lastName: String): [StudentSummary] @aws_iam @aws_cognito_user_pools
+
+    getData(studentId: String!, startDate: String!, endDate: String!, scope: ReportScope!): ReportDetails @aws_iam @aws_cognito_user_pools
+    getNotes(studentId: String!, startDate: String!, endDate: String!): [StudentNote] @aws_iam @aws_cognito_user_pools
+
+    listSnapshots(studentId: String!): SnapshotReports @aws_iam @aws_cognito_user_pools
+    getSnapshot(studentId: String!, date: String!, reportType: String!, timezone: String, userId: String @aws_iam): SnapshotReport @aws_iam @aws_cognito_user_pools
+
+    getSubscriptionsForStudent(studentId: String!): [QLStudentSubscriptionConfig] @aws_iam @aws_cognito_user_pools
+    getServerSettings: ServerSettings
+}
+
+type Mutation {
+    updateService(studentId: String!, service: ServiceInput): Service @aws_iam @aws_cognito_user_pools
+    updateStudent(student: StudentInput!): Student @aws_iam @aws_cognito_user_pools
+
+    updateUser(user: UserUpdateInput!): UserSummary @aws_iam @aws_cognito_user_pools
+    acceptUserTerms(accept: Boolean): Boolean @aws_iam @aws_cognito_user_pools
+
+    changeLicense(input: LicenseUpdateInput): LicenseUserDetails @aws_iam @aws_cognito_user_pools
+    userLicenseChange(userId: String!): LicenseUserDetails @aws_iam @aws_cognito_user_pools
+
+    updateServiceDefinition(service: ServiceInput!): Service @aws_iam @aws_cognito_user_pools
+    deleteServiceDefinition(serviceId: String!): Service @aws_iam @aws_cognito_user_pools
+
+    updateUserBehaviorDashboardSettings(studentId: String!, dashboard: StudentDashboardSettingsInput): StudentDashboardSettings @aws_iam @aws_cognito_user_pools
+
+    updateSnapshot(studentId: String!, date: String!, reportType: String!, snapshot: SnapshotReportInput!): SnapshotReport @aws_iam @aws_cognito_user_pools
+
+    updateDataInReport(studentId: String!, data: ReportDataInput!): ReportAnyData @aws_iam @aws_cognito_user_pools
+    updateReportDaySchedule(studentId: String!, data: ReportDetailsScheduleInput!): ReportDetailsSchedule @aws_iam @aws_cognito_user_pools
+    updateNotes(input: StudentNoteInput!): StudentNote @aws_iam @aws_cognito_user_pools
+    updateReportDateInclusion(studentId: String!, input: StudentDashboardSettingsDateInclusionInput!): Boolean @aws_iam @aws_cognito_user_pools
+
+    updateApp(appConfig: AppDefinitionInput!): AppDefinitionOutput @aws_iam @aws_cognito_user_pools
+
+    deleteNotifications(notifications: QLDeleteNotificationInput!): [StudentNotification] @aws_iam @aws_cognito_user_pools
+    studentNotificationChange(studentId: String!, userId: String!): [StudentNotification] @aws_iam @aws_cognito_user_pools
+
+    studentDataChange(input: ReportEventDataInput): ReportEventData! @aws_iam @aws_cognito_user_pools
+    deleteStudent(studentIds: [String], license: String): Boolean @aws_iam @aws_cognito_user_pools
+
+    emailSupport(input: EmailSupportInput): Boolean @aws_iam @aws_cognito_user_pools
+
+    updateInvite(studentId: String, status: String): StudentSummary @aws_iam @aws_cognito_user_pools
+}
+
+type Subscription {
+    onStudentNotificationChange: [StudentNotification] @aws_subscribe(mutations: ["studentNotificationChange"]) @aws_cognito_user_pools
+    onUserLicenseChange(userId: String!): LicenseUserDetails @aws_subscribe(mutations: ["userLicenseChange", "changeLicense"]) @aws_cognito_user_pools
+    onStudentDataChange(userId: String!, studentId: String!): ReportEventData @aws_subscribe(mutations: ["studentDataChange"]) @aws_cognito_user_pools
+    onStudentNote(studentId: String!): StudentNote @aws_subscribe(mutations: ["updateNotes"]) @aws_cognito_user_pools
+}

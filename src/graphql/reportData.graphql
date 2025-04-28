@@ -1,0 +1,176 @@
+type ReportDataSource @aws_iam @aws_cognito_user_pools {
+    device: String!
+    rater: String!
+}
+
+input ReportDataSourceInput @aws_iam @aws_cognito_user_pools {
+    device: String!
+    rater: String!
+}
+
+type ReportDataAbc @aws_iam @aws_cognito_user_pools {
+    a: String!
+    c: String!
+}
+
+input ReportDataAbcInput @aws_iam @aws_cognito_user_pools {
+    a: String!
+    c: String!
+}
+
+type ReportDataProgressMeasurement @aws_iam @aws_cognito_user_pools {
+    name: String
+    value: Int
+}
+input ReportDataProgressMeasurementInput @aws_iam @aws_cognito_user_pools {
+    name: String
+    value: Int
+}
+
+type ReportDataProgress @aws_iam @aws_cognito_user_pools {
+    progress: Int
+    measurements: [ReportDataProgressMeasurement]
+}
+
+input ReportDataProgressInput @aws_iam @aws_cognito_user_pools {
+    progress: Int
+    measurements: [ReportDataProgressMeasurementInput]
+}
+
+type ReportData @aws_iam @aws_cognito_user_pools {
+    dateEpoc: Long!
+    behavior: String!
+    reported: Boolean
+    notStopped: Boolean
+    score: Int
+    isManual: Boolean
+    source: ReportDataSource!
+    deleted: DeleteDetails
+    abc: ReportDataAbc
+    duration: Int
+    intensity: Int
+}
+
+type ReportServiceData @aws_iam @aws_cognito_user_pools {
+    dateEpoc: Long!
+    service: String!
+    duration: Int
+    reported: Boolean
+    isManual: Boolean
+    notStopped: Boolean
+    source: ReportDataSource!
+    deleted: DeleteDetails
+    modifications: [String]
+    serviceProgress: ReportDataProgress
+}
+
+input ReportDataInput @aws_iam @aws_cognito_user_pools {
+    dateEpoc: Long!
+    behavior: String
+    service: String
+    reported: Boolean
+    score: Int
+    isManual: Boolean
+    source: ReportDataSourceInput
+    deleted: DeleteDetailsInput
+    abc: ReportDataAbcInput
+    serviceProgress: ReportDataProgressInput
+    duration: Int
+    notStopped: Boolean
+    modifications: [String]
+    progress: ReportDataProgressInput
+    redoDurations: Boolean
+    intensity: Int
+}
+
+input ReportEventDataInput @aws_iam @aws_cognito_user_pools {
+    studentId: String!
+    userId: String!
+    dateEpoc: Long!
+    behavior: String
+    service: String
+    reported: Boolean
+    score: Int
+    isManual: Boolean
+    source: ReportDataSourceInput
+    deleted: DeleteDetailsInput
+    abc: ReportDataAbcInput
+    serviceProgress: ReportDataProgressInput
+    duration: Int
+    notStopped: Boolean
+    modifications: [String]
+    progress: ReportDataProgressInput
+    redoDurations: Boolean
+    intensity: Int
+}
+
+type ReportEventData @aws_iam @aws_cognito_user_pools {
+    studentId: String!
+    userId: String!
+    dateEpoc: Long!
+    behavior: String
+    service: String
+    reported: Boolean
+    score: Int
+    isManual: Boolean
+    source: ReportDataSource
+    deleted: DeleteDetails
+    abc: ReportDataAbc
+    serviceProgress: ReportDataProgress
+    duration: Int
+    notStopped: Boolean
+    modifications: [String]
+    progress: ReportDataProgress
+    redoDurations: Boolean
+    intensity: Int
+}
+
+type ReportAnyData @aws_iam @aws_cognito_user_pools {
+    dateEpoc: Long!
+    behavior: String
+    service: String
+    reported: Boolean
+    score: Int
+    isManual: Boolean
+    source: ReportDataSource
+    deleted: DeleteDetails
+    abc: ReportDataAbc
+    serviceProgress: ReportDataProgress
+    duration: Int
+    notStopped: Boolean
+    modifications: [String]
+    progress: ReportDataProgress
+    intensity: Int
+}
+
+type ReportDetailsSchedule @aws_iam @aws_cognito_user_pools {
+    date: String!
+    schedule: String!
+}
+
+input ReportDetailsScheduleInput @aws_iam @aws_cognito_user_pools {
+    date: String!
+    schedule: String!
+}
+
+type RaterName @aws_iam @aws_cognito_user_pools {
+    rater: String!
+    name: String!
+}
+
+type ReportDetails @aws_iam @aws_cognito_user_pools {
+    data: [ReportData]!
+    services: [ReportServiceData]!
+    raters: [RaterName]
+    startMillis: Long!
+    endMillis: Long
+    schedules: [ReportDetailsSchedule]
+    excludeDays: [String]
+    includeDays: [String]
+    excludedIntervals: [String]
+}
+
+input ReportScope @aws_iam @aws_cognito_user_pools {
+    behavior: Boolean
+    service: Boolean
+}

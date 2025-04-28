@@ -1,0 +1,35 @@
+
+type StudentNoteSource @aws_iam @aws_cognito_user_pools {
+    id: String
+    name: String
+    type: String
+}
+
+type StudentNote @aws_iam @aws_cognito_user_pools {
+    studentId: String!
+    product: String!
+    noteDate: Long!
+    noteId: String
+    dateEpoc: Long!
+    date: String
+    source: StudentNoteSource
+    note: String!
+}
+
+input StudentNoteSourceInput @aws_iam @aws_cognito_user_pools {
+    id: String!
+    name: String
+    type: String!
+}
+input StudentNoteInput @aws_iam @aws_cognito_user_pools {
+    studentId: String!
+    product: String!
+    noteDate: Long!
+    noteId: String
+    dateEpoc: Long!
+    date: String
+    source: StudentNoteSourceInput
+    note: String!
+    threadId: String
+    remove: Boolean
+}

@@ -1,0 +1,143 @@
+type SnapshotReportsKey @aws_iam @aws_cognito_user_pools {
+    date: String!
+    type: String!
+}
+
+type SnapshotReportModified @aws_iam @aws_cognito_user_pools {
+    userId: String!
+    date: String!
+}
+input SnapshotReportModifiedInput @aws_iam @aws_cognito_user_pools {
+    userId: String!
+    date: String!
+}
+
+type StudentSummaryReportBehaviorTargetMeasurement @aws_iam @aws_cognito_user_pools {
+    name: String!
+    value: Int
+}
+input StudentSummaryReportBehaviorTargetMeasurementInput @aws_iam @aws_cognito_user_pools {
+    name: String!
+    value: Float
+}
+
+type StudentSummaryReportBehaviorTarget @aws_iam @aws_cognito_user_pools {
+    target: Int
+    progress: Int
+    measurement: String!
+    measurements: [StudentSummaryReportBehaviorTargetMeasurement]
+}
+input StudentSummaryReportBehaviorTargetInput @aws_iam @aws_cognito_user_pools {
+    target: Int
+    progress: Int
+    measurement: String!
+    measurements: [StudentSummaryReportBehaviorTargetMeasurementInput]
+}
+
+type StudentSummaryReportBehaviorTargets @aws_iam @aws_cognito_user_pools {
+    frequency: StudentSummaryReportBehaviorTarget
+    sum: StudentSummaryReportBehaviorTarget
+    avg: StudentSummaryReportBehaviorTarget
+    max: StudentSummaryReportBehaviorTarget
+    min: StudentSummaryReportBehaviorTarget
+}
+
+input StudentSummaryReportBehaviorTargetsInput @aws_iam @aws_cognito_user_pools {
+    frequency: StudentSummaryReportBehaviorTargetInput
+    sum: StudentSummaryReportBehaviorTargetInput
+    avg: StudentSummaryReportBehaviorTargetInput
+    max: StudentSummaryReportBehaviorTargetInput
+    min: StudentSummaryReportBehaviorTargetInput
+}
+
+type StudentSummaryReportBehaviorFace @aws_iam @aws_cognito_user_pools {
+    face: String!
+    overwrite: Boolean
+}
+input StudentSummaryReportBehaviorFaceInput @aws_iam @aws_cognito_user_pools {
+    face: String!
+    overwrite: Boolean
+}
+
+type StudentSummaryReportBehaviorStatsType @aws_iam @aws_cognito_user_pools {
+    count: Int!
+    delta: Int!
+    modifier: String!
+}
+
+type StudentSummaryReportBehaviorStats @aws_iam @aws_cognito_user_pools {
+    week: StudentSummaryReportBehaviorStatsType
+    day: StudentSummaryReportBehaviorStatsType
+}
+
+type StudentSummaryReportBehavior @aws_iam @aws_cognito_user_pools {
+    show: Boolean
+    behaviorId: String
+    isDuration: Boolean
+    displayText: String
+    faces: [StudentSummaryReportBehaviorFace]
+    targets: StudentSummaryReportBehaviorTargets
+    stats: StudentSummaryReportBehaviorStats
+}
+input StudentSummaryReportBehaviorInput @aws_iam @aws_cognito_user_pools {
+    show: Boolean
+    behaviorId: String!
+    isDuration: Boolean
+    displayText: String!
+    faces: [StudentSummaryReportBehaviorFaceInput]!
+    targets: StudentSummaryReportBehaviorTargetsInput
+}
+
+type StudentSummaryReportLegendMeasurement @aws_iam @aws_cognito_user_pools {
+    name: String!
+    value: Float
+    color: String
+    order: Int
+}
+input StudentSummaryReportLegendMeasurementInput @aws_iam @aws_cognito_user_pools {
+    name: String!
+    value: Float
+    color: String
+    order: Int
+}
+
+type StudentSummaryReportLegend @aws_iam @aws_cognito_user_pools {
+    behavior: String
+    measurement: String
+    target: Int
+    progress: Int
+    measurements: [StudentSummaryReportLegendMeasurement]
+}
+input StudentSummaryReportLegendInput @aws_iam @aws_cognito_user_pools {
+    behavior: String
+    measurement: String
+    target: Int
+    progress: Int
+    measurements: [StudentSummaryReportLegendMeasurementInput]
+}
+
+type SnapshotReport @aws_iam @aws_cognito_user_pools {
+    studentId: String
+    lastModified: SnapshotReportModified
+    message: String
+    date: String
+    type: String
+    behaviors: [StudentSummaryReportBehavior]
+    legend: [StudentSummaryReportLegend]
+    published: Boolean
+}
+input SnapshotReportInput @aws_iam @aws_cognito_user_pools {
+    studentId: String!
+    lastModified: SnapshotReportModifiedInput
+    message: String
+    date: String!
+    type: String!
+    behaviors: [StudentSummaryReportBehaviorInput]
+    legend: [StudentSummaryReportLegendInput]
+    published: Boolean
+}
+
+type SnapshotReports @aws_iam @aws_cognito_user_pools {
+    reports: [SnapshotReportsKey]
+    latest: SnapshotReport
+}

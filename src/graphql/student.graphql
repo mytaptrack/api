@@ -1,0 +1,417 @@
+
+input getStudentsParams @aws_iam @aws_cognito_user_pools {
+    behavior: Boolean
+    service: Boolean
+    trackable: Boolean
+}
+
+type Tag @aws_iam @aws_cognito_user_pools {
+    tag: String
+    type: String
+}
+input TagInput @aws_iam @aws_cognito_user_pools {
+    tag: String
+    type: String
+}
+
+type DeleteDetails @aws_iam @aws_cognito_user_pools {
+    date: String
+    by: String
+}
+input DeleteDetailsInput @aws_iam @aws_cognito_user_pools {
+    date: String
+    by: String
+}
+
+type StudentDetails  @aws_iam @aws_cognito_user_pools {
+    firstName: String!
+    lastName: String!
+    nickname: String
+    schoolId: String
+    tags: [Tag]
+}
+
+type StudentSummaryTracking @aws_iam @aws_cognito_user_pools {
+    service: Boolean
+    behavior: Boolean
+}
+
+type StudentSummary @aws_iam @aws_cognito_user_pools {
+    studentId: String
+    details: StudentDetails
+    tracking: StudentSummaryTracking
+    lastTracked: String
+    behaviors: [Trackable]
+    abc: AbcCollection
+}
+
+
+type LicenseSummary @aws_iam @aws_cognito_user_pools {
+    fullYear: Boolean
+    flexible: Boolean
+    services: Boolean
+    transferable: Boolean
+    expiration: String
+}
+
+type Milestone @aws_iam @aws_cognito_user_pools {
+    date: String
+    description: String
+    title: String
+}
+
+input MilestoneInput @aws_iam @aws_cognito_user_pools {
+    date: String
+    description: String
+    title: String
+}
+
+type TrackableTargetMeasurement @aws_iam @aws_cognito_user_pools {
+    name: String
+    value: Int
+}
+input TrackableTargetMeasurementInput @aws_iam @aws_cognito_user_pools {
+    name: String
+    value: Int
+}
+
+type TrackableTarget @aws_iam @aws_cognito_user_pools {
+    measurement: String
+    measurements: [TrackableTargetMeasurement]
+    progress: Int
+    target: Int
+    targetType: String
+    intensity: Int
+}
+
+input TrackableTargetInput @aws_iam @aws_cognito_user_pools {
+    measurement: String
+    measurements: [TrackableTargetMeasurementInput]
+    progress: Int
+    target: Int
+    targetType: String
+    intensity: Int
+}
+
+type Trackable @aws_iam @aws_cognito_user_pools {
+    baseline: Boolean
+    daytime: Boolean
+    desc: String
+    id: String!
+    trackAbc: Boolean
+    intensity: Int
+    isArchived: Boolean
+    isDuration: Boolean
+    name: String!
+    managed: Boolean
+    requireResponse: Boolean
+    targets: [TrackableTarget]
+    tags: [Tag]
+}
+input TrackableInput @aws_iam @aws_cognito_user_pools {
+    abbreviation: String
+    baseline: Boolean
+    daytime: Boolean
+    desc: String
+    id: String
+    isArchived: Boolean
+    isDuration: Boolean
+    trackAbc: Boolean
+    intensity: Int
+    name: String!
+    managed: Boolean
+    requireResponse: Boolean
+    tags: [TagInput]
+    targets: [TrackableTargetInput]
+}
+
+type StudentAbsence @aws_iam @aws_cognito_user_pools {
+    start: Long!
+    end: Long!
+    note: String
+}
+
+input StudentAbsenceInput @aws_iam @aws_cognito_user_pools {
+    start: Long!
+    end: Long!
+    note: String
+}
+
+type StudentRestrictions @aws_iam @aws_cognito_user_pools {
+    info: String!
+    data: String!
+    schedules: String!
+    devices: String!
+    team: String!
+    comments: String!
+    behavior: String!
+    behaviors: [String]
+    abc: String!
+    milestones: String!
+    reports: String!
+    notifications: String!
+    reportsOverride: Boolean
+    transferLicense: Boolean
+    documents: String!
+
+    service: String!
+    services: [String]
+    serviceData: String!
+    serviceGoals: String!
+    serviceSchedule: String!
+}
+
+input StudentRestrictionsInput @aws_iam @aws_cognito_user_pools {
+    info: String!
+    data: String!
+    schedules: String!
+    devices: String!
+    team: String!
+    comments: String!
+    behavior: String!
+    behaviors: [String]
+    abc: String!
+    milestones: String!
+    reports: String!
+    notifications: String!
+    reportsOverride: Boolean
+    transferLicense: Boolean
+    documents: String!
+
+    service: String!
+    services: [String]
+    serviceData: String!
+    serviceGoals: String!
+    serviceSchedule: String!
+}
+
+type StudentNotification @aws_iam @aws_cognito_user_pools {
+    epoch: Long!
+    behaviorId: String!
+}
+
+input QLDeleteNotificationEventInput {
+    behaviorId: String!
+    epoch: Long!
+}
+input QLDeleteNotificationInput {
+    studentId: String!
+    events: [QLDeleteNotificationEventInput]!
+}
+
+type Student @aws_iam @aws_cognito_user_pools {
+    studentId: String!
+    license: String!
+    licenseDetails: LicenseSummary!
+    schoolStudentId: String
+    details: StudentDetails!
+    lastTracked: String
+    lastUpdateDate: String
+    archived: Boolean
+
+    milestones: [Milestone]!
+    abc: AbcCollection
+
+    absences: [StudentAbsence]!
+    behaviors: [Trackable]!
+    responses: [Trackable]!
+    services: [Service]!
+    futureExclusions: [Int]
+    restrictions: StudentRestrictions!
+    dashboard: StudentDashboardSettings!
+    studentDashboard: StudentDashboardSettings
+    scheduleCategories: [StudentScheduleCategory]
+    features: LicenseFeatures
+
+    notifications: [StudentNotification]
+}
+
+type StudentScheduleActivity @aws_iam @aws_cognito_user_pools {
+    startTime: String!
+    endTime: String!
+    title: String!
+    comments: String
+    id: String
+    timezone: String
+}
+input StudentScheduleActivityInput @aws_iam @aws_cognito_user_pools {
+    startTime: String!
+    endTime: String!
+    title: String!
+    comments: String
+    id: String
+    timezone: String
+}
+
+type StudentSchedule @aws_iam @aws_cognito_user_pools {
+    activities: [StudentScheduleActivity]!
+    name: String!
+    applyDays: [Int]
+    startDate: String!
+    deleted: Boolean
+}
+input StudentScheduleInput @aws_iam @aws_cognito_user_pools {
+    activities: [StudentScheduleActivityInput]!
+    name: String!
+    applyDays: [Int]
+    startDate: String!
+    deleted: Boolean
+}
+
+type StudentScheduleCategory @aws_iam @aws_cognito_user_pools {
+    name: String!
+    schedules: [StudentSchedule]!
+}
+
+input StudentScheduleCategoryInput @aws_iam @aws_cognito_user_pools {
+    name: String!
+    schedules: [StudentScheduleInput]!
+}
+
+type StudentDashboardSettingsVelocity @aws_iam @aws_cognito_user_pools {
+    enabled: Boolean!
+    trackedEvent: String
+}
+
+type StudentDashboardSettingsSummary @aws_iam @aws_cognito_user_pools {
+    after45: String
+    after150: String
+    calculationType: String
+    showTargets: Boolean
+    averageDays: Int
+}
+
+type StudentDashboardSettings @aws_iam @aws_cognito_user_pools {
+    behaviors: [BehaviorSettings]
+    responses: [BehaviorSettings]
+    antecedents: [AntecedentSettings]
+    devices: [DashboardDeviceSettings]
+    velocity: StudentDashboardSettingsVelocity!
+    summary: StudentDashboardSettingsSummary!
+    autoExcludeDays: [Int]
+    measurementUnit: String
+    chartType: String
+    showExcludedChartGaps: Boolean
+
+}
+
+input StudentDashboardSettingsVelocityInput @aws_iam @aws_cognito_user_pools {
+    enabled: Boolean!
+    trackedEvent: String
+}
+
+input StudentDashboardSettingsSummaryInput @aws_iam @aws_cognito_user_pools {
+    after45: String
+    after150: String
+    calculationType: String
+    showTargets: Boolean
+    averageDays: Int
+}
+
+input StudentDashboardSettingsInput @aws_iam @aws_cognito_user_pools {
+    behaviors: [BehaviorSettingsInput]
+    responses: [BehaviorSettingsInput]
+    antecedents: [AntecedentSettingsInput]
+    devices: [DashboardDeviceSettingsInput]
+    velocity: StudentDashboardSettingsVelocityInput!
+    summary: StudentDashboardSettingsSummaryInput!
+    autoExcludeDays: [Int]
+    measurementUnit: String
+    chartType: String
+    showExcludedChartGaps: Boolean
+    user: Boolean
+}
+
+input StudentDashboardSettingsDateInclusionInput @aws_iam @aws_cognito_user_pools {
+    startDate: Long!
+    endDate: Long!
+    exclude: [String]!
+    include: [String]!
+}
+
+type DashboardDeviceSettings @aws_iam @aws_cognito_user_pools {
+    id: String!
+    name: String!
+    calculation: String!
+}
+
+input DashboardDeviceSettingsInput @aws_iam @aws_cognito_user_pools {
+    id: String!
+    name: String!
+    calculation: String!
+}
+
+type BehaviorSettingsDuration @aws_iam @aws_cognito_user_pools {
+    sum: String
+    avg: String
+    max: String
+    min: String
+    target: Boolean
+}
+
+type BehaviorSettings @aws_iam @aws_cognito_user_pools {
+    id: String!
+    frequency: String
+    duration: BehaviorSettingsDuration
+}
+
+input BehaviorSettingsDurationInput @aws_iam @aws_cognito_user_pools {
+    sum: String
+    avg: String
+    max: String
+    min: String
+    target: Boolean
+}
+
+input BehaviorSettingsInput @aws_iam @aws_cognito_user_pools {
+    id: String
+    frequency: String
+    duration: BehaviorSettingsDurationInput
+}
+
+type AntecedentSettings @aws_iam @aws_cognito_user_pools {
+    name: String
+    display: Boolean
+}
+
+input AntecedentSettingsInput @aws_iam @aws_cognito_user_pools {
+    name: String
+    display: Boolean
+}
+
+input StudentLicenseSummary @aws_iam @aws_cognito_user_pools {
+    fullYear: Boolean
+    flexible: Boolean
+    services: Boolean
+    transferable: Boolean
+}
+
+input StudentInput @aws_iam @aws_cognito_user_pools {
+    studentId: String
+    license: String!
+    licenseDetails: StudentLicenseSummary
+    schoolStudentId: String
+    details: StudentDetailsInput
+    archived: Boolean
+
+    milestones: [MilestoneInput]
+    abc: AbcCollectionInput
+
+    absences: [StudentAbsenceInput]
+    behaviors: [TrackableInput]
+    responses: [TrackableInput]
+    services: [ServiceInput]
+    futureExclusions: [Int]
+
+    dashboard: StudentDashboardSettingsInput
+
+    scheduleCategories: [StudentScheduleCategoryInput]
+}
+
+input StudentDetailsInput  @aws_iam @aws_cognito_user_pools {
+    firstName: String!
+    lastName: String!
+    nickname: String
+    schoolId: String
+    tags: [TagInput]
+}

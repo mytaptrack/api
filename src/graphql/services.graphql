@@ -1,0 +1,135 @@
+input ServicesInput @aws_iam @aws_cognito_user_pools {
+    services: [ServiceInput]
+}
+
+type ServiceGoalTarget @aws_iam @aws_cognito_user_pools {
+    name: String
+    startAt: Int
+    goal: Int
+}
+input ServiceInputGoalTarget @aws_iam @aws_cognito_user_pools {
+    name: String
+    startAt: Int
+    goal: Int
+}
+
+type ServiceGoal @aws_iam @aws_cognito_user_pools {
+    trackGoalPercent: Boolean
+    goalTargets: [ServiceGoalTarget]
+}
+
+
+input ServiceInputGoal @aws_iam @aws_cognito_user_pools {
+    trackGoalPercent: Boolean
+    goalTargets: [ServiceInputGoalTarget]
+}
+
+type Service @aws_iam @aws_cognito_user_pools {
+    id: String!
+    name: String!
+    startDate: Long!
+    endDate: Long!
+    desc: String
+    measurementUnit: String
+    period: String
+    durationRounding: Int
+    isDuration: Boolean
+    isArchived: Boolean
+    target: Int
+    goals: ServiceGoal
+    detailedTargets: [ServiceDetailedMinuteTarget]!
+    modifications: [String]!
+    currentBalance: Int
+    lastUpdateDate: Int
+}
+
+input ServiceInput @aws_iam @aws_cognito_user_pools {
+    id: String
+    name: String!
+    startDate: Long!
+    endDate: Long!
+    desc: String
+    durationRounding: Int
+    target: Int
+    detailedTargets: [ServiceInputDetailedMinuteTarget]!
+    goals: ServiceInputGoal
+    modifications: [String]!
+    isArchived: Boolean
+}
+
+type ServiceGoalTrackingTarget {
+    name: String
+    startAt: Int
+    goal: Int
+}
+input ServiceInputGoalTrackingTarget {
+    name: String
+    startAt: Int
+    goal: Int
+}
+
+type ServiceGoalTracking {
+    trackPercentComplete: Boolean
+    goalTargets: [ServiceGoalTrackingTarget]
+}
+
+input ServiceInputGoalTracking {
+    trackPercentComplete: Boolean
+    goalTargets: [ServiceInputGoalTrackingTarget]
+}
+
+type ServiceDetailedMinuteTarget @aws_iam @aws_cognito_user_pools {
+    date: Long!
+    target: Int!
+    groupId: Long!
+    type: String!
+}
+
+input ServiceInputDetailedMinuteTarget @aws_iam @aws_cognito_user_pools {
+    date: Long!
+    target: Int!
+    groupId: Long!
+    type: String!
+}
+
+type ServiceReportStudentStats @aws_iam @aws_cognito_user_pools {
+    provided: Int!
+    projected: Int!
+    removed: Int!
+}
+
+type ServiceReportStudentData @aws_iam @aws_cognito_user_pools {
+    serviceId: String!
+    serviceName: String!
+    lastUpdateDate: Int
+    percentGoal: Float
+    mitigations: [ServiceDetailedMinuteTarget]
+    currentWeek: ServiceReportStudentStats
+    yearToDate: ServiceReportStudentStats
+}
+
+type ServiceReportStudentSummary @aws_iam @aws_cognito_user_pools {
+    studentId: String!
+    studentName: String!
+    services: [ServiceReportStudentData]
+}
+
+type GlobalServiceReport @aws_iam @aws_cognito_user_pools {
+    serviceId: String!
+    serviceName: String!
+    serviceMinutes: [Int]
+}
+
+type GlobalServicesReportSchedule @aws_iam @aws_cognito_user_pools {
+    serviceId: String!
+    date: Int!
+    studentId: String!
+}
+
+type GlobalServicesReport @aws_iam @aws_cognito_user_pools {
+    services: [GlobalServiceReport]
+    outOfComp: [ServiceReportStudentSummary]
+    atRisk: [ServiceReportStudentSummary]
+    students: [ServiceReportStudentSummary]
+    schedule: [GlobalServicesReportSchedule]
+}

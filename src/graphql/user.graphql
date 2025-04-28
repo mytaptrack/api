@@ -1,0 +1,97 @@
+
+type UserMajorFeatures @aws_iam @aws_cognito_user_pools {
+    license: String
+    behaviorTracking: Boolean
+    serviceTracking: Boolean
+    tracking: Boolean
+    manage: Boolean
+}
+
+type UserInvite {
+    name: String
+    studentId: String
+    status: String
+}
+
+type User @aws_iam @aws_cognito_user_pools {
+    id: String
+    firstName: String
+    lastName: String
+    name: String
+    email: String
+    state: String
+    zip: String
+    terms: String
+    majorFeatures: UserMajorFeatures
+    invites: [UserInvite]
+}
+
+input UserSummaryStudentInput @aws_iam @aws_cognito_user_pools {
+    studentId: String!
+    restrictions: StudentRestrictionsInput!
+    deleted: Boolean
+    behaviors: Boolean!
+    services: Boolean!
+    teamStatus: String
+}
+
+input UserMajorFeaturesInput @aws_iam @aws_cognito_user_pools {
+    license: String
+    behaviorTracking: Boolean
+    featureTracking: Boolean
+    manage: Boolean
+}
+
+input UserUpdateInput @aws_iam @aws_cognito_user_pools {
+    id: String!
+    firstName: String
+    lastName: String
+    name: String
+    email: String!
+    state: String
+    zip: String
+    students: [UserSummaryStudentInput]
+    majorFeatures: UserMajorFeaturesInput
+}
+
+type UserSummaryStudent @aws_iam @aws_cognito_user_pools {
+    studentId: String
+    restrictions: StudentRestrictions
+    behaviors: Boolean
+    services: Boolean
+    teamStatus: String
+}
+
+type UserSummary @aws_iam @aws_cognito_user_pools {
+    id: String!
+    firstName: String
+    lastName: String
+    name: String!
+    email: String!
+    students: [UserSummaryStudent]!
+}
+
+type LicenseStudentSummaryTrackable @aws_iam @aws_cognito_user_pools {
+    name: String!
+    id: String!
+}
+type LicenseStudentSummary @aws_iam @aws_cognito_user_pools {
+    id: String!
+    name: String!
+    firstName: String
+    lastName: String
+    schoolId: String
+    behaviors: [LicenseStudentSummaryTrackable]
+    services: [LicenseStudentSummaryTrackable]
+    licenseDetails: LicenseSummary
+}
+
+type LicenseUsersResult @aws_iam @aws_cognito_user_pools {
+    users: [UserSummary]!
+    students: [LicenseStudentSummary]!
+}
+
+type StripeSessionResult @aws_cognito_user_pools {
+    license: String!
+    clientSecret: String!
+}

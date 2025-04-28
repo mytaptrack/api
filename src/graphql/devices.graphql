@@ -1,0 +1,225 @@
+type AppBehaviorItem @aws_iam @aws_cognito_user_pools {
+    id: String!
+    name: String!
+    abc: Boolean
+    order: Int!
+    intensity: Boolean
+    maxIntensity: Int
+}
+input AppBehaviorItemInput @aws_iam @aws_cognito_user_pools {
+    id: String!
+    abc: Boolean
+    order: Int!
+    intensity: Boolean
+}
+
+type AppServiceItem @aws_iam @aws_cognito_user_pools {
+    id: String!
+    name: String!
+    order: Int!
+}
+input AppServiceItemInput @aws_iam @aws_cognito_user_pools {
+    id: String!
+    order: Int!
+}
+
+type AppSummary @aws_iam @aws_cognito_user_pools {
+    deviceId: String
+    name: String!
+    tags: [String]!
+    studentName: String
+    behaviors: [AppBehaviorItem]
+    responses: [AppBehaviorItem]
+    services: [AppServiceItem]
+    textAlerts: Boolean
+}
+
+input AppSummaryInput @aws_iam @aws_cognito_user_pools {
+    deviceId: String
+    name: String!
+    tags: [String]!
+}
+
+type AppDefinitionStudent @aws_iam @aws_cognito_user_pools {
+    studentId: String!
+    studentName: String!
+    groups: [String]
+    behaviors: [AppBehaviorItem]!
+    responses: [AppBehaviorItem]!
+    services: [AppServiceItem]!
+}
+input AppDefinitionStudentInput @aws_iam @aws_cognito_user_pools {
+    studentId: String!
+    studentName: String!
+    groups: [String]
+    behaviors: [AppBehaviorItemInput]!
+    responses: [AppBehaviorItemInput]!
+    services: [AppServiceItemInput]!
+    delete: Boolean
+}
+
+type AppStudentSummaryTrackable @aws_iam @aws_cognito_user_pools {
+    id: String!
+    name: String!
+    baseline: Boolean
+    abc: Boolean
+    isDuration: Boolean
+    notStopped: Boolean
+    order: Int
+}
+
+type AppStudentSummaryServiceTrackable @aws_iam @aws_cognito_user_pools {
+    id: String!
+    name: String!
+    notStopped: Boolean
+    order: Int
+    percentage: Boolean
+    trackedItems: [String]
+    modifications: [String]
+}
+
+type DeviceAppStudentSummaryTrackable @aws_iam  {
+    id: String!
+    name: String!
+    isDuration: Boolean
+    abc: Boolean
+    intensity: Boolean
+    maxIntensity: Int
+    notStopped: Boolean
+    lastStart: Long
+    order: Int
+}
+
+type AppStudentSummary @aws_iam @aws_cognito_user_pools {
+    studentId: String!
+    nickname: String!
+    abcAvailable: Boolean
+    restrictions: StudentRestrictions
+    behaviors: [AppStudentSummaryTrackable]
+    responses: [AppStudentSummaryTrackable]
+    services: [AppStudentSummaryServiceTrackable]
+}
+
+type DeviceAppStudentSummary @aws_iam {
+    studentId: String!
+    studentName: String!
+    restrictions: StudentRestrictions
+    services: [AppStudentSummaryServiceTrackable]
+    abc: AbcCollection
+    behaviors: [DeviceAppStudentSummaryTrackable]
+    responses: [DeviceAppStudentSummaryTrackable]
+    groups: [String]
+    license: String
+}
+
+type AppDefinition @aws_iam @aws_cognito_user_pools {
+    deviceId: String
+    license: String!
+    name: String!
+    textAlerts: Boolean
+    timezone: String
+    studentConfigs: [AppDefinitionStudent]!
+    students: [AppStudentSummary]!
+    qrExpiration: Long
+    tags: [Tag]!
+}
+
+type DeviceAppDefinition @aws_iam {
+    deviceId: String!
+    name: String
+    textAlerts: Boolean
+    timezone: String
+    identity: String
+    studentConfigs: [DeviceAppStudentSummary]!
+    qrExpiration: Long
+}
+
+input AppDefinitionInput @aws_iam @aws_cognito_user_pools {
+    deviceId: String
+    license: String!
+    name: String!
+    textAlerts: Boolean
+    timezone: String
+    studentConfigs: [AppDefinitionStudentInput]!
+    qrExpiration: Long
+    tags: [TagInput]!
+    reassign: Boolean
+    deleted: Boolean
+}
+
+type AppToken @aws_iam @aws_cognito_user_pools {
+    token: String
+    qrExpiration: Long
+}
+
+type AppDefinitionOutput @aws_iam @aws_cognito_user_pools {
+    deviceId: String
+}
+
+type IoTClickerBehaviorItem @aws_iam @aws_cognito_user_pools {
+    behaviorId: String!
+    presses: Int!
+}
+
+type IoTClickerSwitchCommand @aws_iam @aws_cognito_user_pools {
+    term: String!
+    studentId: String!
+}
+
+type IoTClicker @aws_iam @aws_cognito_user_pools {
+    dsn: String!
+    deviceName: String!
+    validated: Boolean!
+    events: [IoTClickerBehaviorItem]!
+    termSetup: Boolean
+    commands: [IoTClickerSwitchCommand]!
+    timezone: String!
+}
+
+type StudentDataSourceSummary @aws_iam @aws_cognito_user_pools {
+    name: String!
+    id: String!
+}
+
+type StudentDataSources @aws_iam @aws_cognito_user_pools {
+    team: [StudentDataSourceSummary]!
+    apps: [StudentDataSourceSummary]!
+    track2: [StudentDataSourceSummary]!
+}
+
+input AppClaimInput @aws_iam @aws_cognito_user_pools {
+    id: String
+    auth: String
+}
+
+type CommandSwitchStudent @aws_iam @aws_cognito_user_pools {
+    term: String!
+    studentId: String!
+}
+
+
+type IoTDeviceSubscription @aws_iam @aws_cognito_user_pools {
+    type: String!
+    userId: String!
+    email: Boolean!
+    sms: Boolean!
+}
+
+type IoTDeviceEvent @aws_iam @aws_cognito_user_pools {
+    eventId: String!
+    presses: Int!
+    order: Int,
+    isDuration: Boolean
+    notStopped: Boolean
+    lastStart: Long
+}
+
+type Track20 @aws_iam @aws_cognito_user_pools {
+    dsn: String!
+    studentId: String!
+    license: String!
+    deviceName: String!
+    events: [IoTDeviceEvent]
+    timezone: String!
+    validated: Boolean
+}

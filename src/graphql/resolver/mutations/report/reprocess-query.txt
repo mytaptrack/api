@@ -1,0 +1,3 @@
+fields substr(@message, 82) as event
+| filter @message like /Handling event/
+| sort @timestamp

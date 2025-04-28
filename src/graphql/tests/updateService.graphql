@@ -1,0 +1,12 @@
+mutation MyMutation {
+  updateService(studentId: "625793de-d8e0-4636-ab8b-9258a6803115", service: {
+    id: "Test Id", 
+    name: "Test Service", 
+    description: "Test Description", 
+    durationUnit: "min", 
+    measurementUnit: "min", 
+    target: 10
+}) {
+    id
+  }
+}

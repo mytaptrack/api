@@ -1,0 +1,45 @@
+type QLStudentSubscriptionConfigNameId @aws_iam @aws_cognito_user_pools {
+    id: String
+    name: String
+}
+
+type QLStudentSubscriptionConfigMessages @aws_iam @aws_cognito_user_pools {
+    default: String
+    email: String
+    text: String
+    app: String
+}
+
+
+input QLStudentSubscriptionConfigMessagesInput @aws_iam @aws_cognito_user_pools {
+    default: String
+    email: String
+    text: String
+    app: String
+}
+
+type QLStudentSubscriptionConfig @aws_iam @aws_cognito_user_pools {
+    studentId: String!
+    name: String!
+    behaviors: [QLStudentSubscriptionConfigNameId]!
+    responses: [QLStudentSubscriptionConfigNameId]!
+    notifyUntilResponse: Boolean
+    users: [QLStudentSubscriptionConfigNameId]!
+    emails: [String]!
+    mobiles: [String]!
+    devices: [QLStudentSubscriptionConfigNameId]!
+    messages: QLStudentSubscriptionConfigMessages
+}
+
+input QLStudentSubscriptionConfigInput @aws_iam @aws_cognito_user_pools {
+    studentId: String
+    name: String
+    behaviorIds: [String]
+    responseIds: [String]
+    notifyUntilResponse: Boolean
+    userIds: [String]
+    emails: [String]
+    mobiles: [String]
+    deviceIds: [String]
+    messages: QLStudentSubscriptionConfigMessagesInput
+}

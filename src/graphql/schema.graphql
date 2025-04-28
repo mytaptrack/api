@@ -1,0 +1,19 @@
+#include "./server.graphql"
+#include "./reportData.graphql"
+#include "./services.graphql"
+#include "./license.graphql"
+#include "./interface.graphql"
+#include "./templates.graphql"
+#include "./student.graphql"
+#include "./devices.graphql"
+#include "./notes.graphql"
+#include "./snapshot.graphql"
+#include "./notifications.graphql"
+#include "./user.graphql"
+#include "./support.graphql"
+
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}

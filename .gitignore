@@ -1,0 +1,11 @@
+/node_modules
+/.build
+/.aws-sam
+/dist
+/coverage
+/.vscode
+/cdk.out
+/.build
+**/.DS_Store
+out.txt
+cdk.context.json

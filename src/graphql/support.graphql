@@ -1,0 +1,5 @@
+
+input EmailSupportInput @aws_iam @aws_cognito_user_pools {
+    url: String!
+    problem: String!
+}
